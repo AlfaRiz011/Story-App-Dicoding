@@ -6,6 +6,8 @@ import com.example.submission_intermediate.service.response.LoginResponse
 import com.example.submission_intermediate.service.response.RegisterResponse
 import com.example.submission_intermediate.service.response.RegisterData
 import com.example.submission_intermediate.service.response.StoriesResponse
+import com.example.submission_intermediate.service.response.StoryAddResponse
+import com.example.submission_intermediate.service.response.StoryData
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -36,4 +38,8 @@ interface ApiService {
         @Path("id") storyId: String
     ): Call<DetailResponse>
 
+    @POST("stories")
+    fun postStory(
+        @Body requestStory: StoryData
+    ) : Call<StoryAddResponse>
 }

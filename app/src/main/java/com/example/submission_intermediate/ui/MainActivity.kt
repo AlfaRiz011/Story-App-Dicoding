@@ -1,11 +1,13 @@
 package com.example.submission_intermediate.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import com.example.submission_intermediate.R
 import com.example.submission_intermediate.databinding.ActivityMainBinding
 import com.example.submission_intermediate.ui.home.HomeFragment
+import com.example.submission_intermediate.ui.story.UploadActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +28,17 @@ class MainActivity : AppCompatActivity() {
             .beginTransaction()
             .add(R.id.coordinator, HomeFragment())
             .commit()
+
+        setAction()
+    }
+
+    private fun setAction() {
+
+        binding.addStory.setOnClickListener{
+            val intent = Intent(this@MainActivity, UploadActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onBackPressed() {

@@ -17,4 +17,8 @@
     <string name="error_load">Error memuat</string>
     <string name="loading_data">Loading…</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ante leo, maximus non condimentum sit amet, vehicula nec tellus. Pellentesque aliquam luctus semper. Vivamus pulvinar pharetra lacus. Vivamus odio erat, maximus sit amet aliquet a, condimentum sodales lacus. Duis id enim velit. Curabitur lacus mi, commodo sit amet lacus eget, dapibu </string>
+    <string name="tulis_deskripsi">Tulis deskripsi.....</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload">UPLOAD</string>
 </resources>

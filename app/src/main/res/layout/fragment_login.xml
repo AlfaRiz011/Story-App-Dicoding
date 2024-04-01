@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.auth.LoginFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primaryKey" >
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="10dp"/>
+
+        <ImageView
+            android:id="@+id/dicodingBanner"
+            android:layout_width="match_parent"
+            android:layout_height="145dp"
+            android:layout_marginTop="30dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/dicoding_banner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/lineMid"
+            android:layout_width="250dp"
+            android:layout_height="5dp"
+            android:background="@color/secondaryKey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/dicodingBanner" />
+
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/welcomeText1"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:alpha="0"
+            tools:alpha="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lineMid" />
+
+        <TextView
+            android:id="@+id/welcomeText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/welcomeText2"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:alpha="0"
+            tools:alpha="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcomeText" />
+
+        <TextView
+            android:id="@+id/login_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/loginName"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:transitionName="auth"
+            android:alpha="0"
+            tools:alpha="100"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintTop_toBottomOf="@id/welcomeText2"
+            app:layout_constraintBottom_toTopOf="@id/email_ed" />
+
+        <com.example.submission_intermediate.ui.customview.CustomEmailText
+            android:id="@+id/email_ed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="10dp"
+            android:transitionName="email"
+            android:alpha="0"
+            tools:alpha="100"
+            app:layout_constraintBottom_toTopOf="@id/pass_ed"/>
+
+        <com.example.submission_intermediate.ui.customview.CustomPasswordText
+            android:id="@+id/pass_ed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:inputType="textPassword"
+            android:transitionName="password"
+            android:alpha="0"
+            tools:alpha="100"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@id/login_btn"/>
+
+        <com.example.submission_intermediate.ui.customview.CustomButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_btn"
+            android:text="@string/loginName"
+            android:enabled="false"
+            android:alpha="0"
+            tools:alpha="100"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@id/regist_tv1"/>
+
+        <TextView
+            android:id="@+id/regist_tv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notRegisterYet"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:alpha="0"
+            tools:alpha="100"
+            app:layout_constraintBottom_toTopOf="@id/regist_tv2"/>
+
+        <TextView
+            android:id="@+id/regist_tv2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registerName"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="200dp"
+            android:textColor="@color/secondaryKey"
+            android:gravity="center"
+            android:alpha="0"
+            tools:alpha="100"
+            app:layout_constraintBottom_toTopOf="@id/regist_tv1"/>
+
+        <View
+            android:id="@+id/lineBottom"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/secondaryKey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

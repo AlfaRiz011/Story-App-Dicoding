@@ -97,7 +97,7 @@ class DetailActivity : AppCompatActivity() {
         this@DetailActivity,
         msg,
         Toast.LENGTH_LONG).show()
-}
+    }
 
     private fun showLoading(state: Boolean) {
         binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE

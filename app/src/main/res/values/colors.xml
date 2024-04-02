@@ -6,4 +6,5 @@
     <color name="secondaryKey">#FF204E</color>
     <color name="accsentPrimary">#A0153E</color>
     <color name="accsentSecondary">#5D0E41</color>
+    <color name="whiteTransparent">#80FFFFFF</color>
 </resources>

@@ -13,6 +13,7 @@ import com.example.submission_intermediate.databinding.ItemStoryBinding
 import com.example.submission_intermediate.service.response.ListStoryItem
 import com.example.submission_intermediate.ui.detail.DetailActivity
 import com.example.submission_intermediate.uitls.CustomViewHelper
+import com.example.submission_intermediate.uitls.Helper
 
 
 class HomeAdapter(private val context: Context) : ListAdapter<ListStoryItem, HomeAdapter.MyViewHolder>(StoryDiffCallback()) {
@@ -31,7 +32,7 @@ class HomeAdapter(private val context: Context) : ListAdapter<ListStoryItem, Hom
         fun bind(story: ListStoryItem){
 
             binding.storyName.text = story.name
-            binding.uploadDate.text = CustomViewHelper.formatCreatedAt(story.createdAt)
+            binding.uploadDate.text = Helper.formatCreatedAt(story.createdAt)
             binding.imgStory.loadImage(url = story.photoUrl)
 
             binding.itemStory.setOnClickListener{

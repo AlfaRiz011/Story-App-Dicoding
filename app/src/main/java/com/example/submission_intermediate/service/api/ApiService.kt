@@ -8,11 +8,15 @@ import com.example.submission_intermediate.service.response.RegisterData
 import com.example.submission_intermediate.service.response.StoriesResponse
 import com.example.submission_intermediate.service.response.StoryAddResponse
 import com.example.submission_intermediate.service.response.StoryData
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -38,8 +42,11 @@ interface ApiService {
         @Path("id") storyId: String
     ): Call<DetailResponse>
 
+    @Multipart
     @POST("stories")
-    fun postStory(
-        @Body requestStory: StoryData
-    ) : Call<StoryAddResponse>
+    fun uploadStory(
+        @Part file: MultipartBody.Part,
+        @Part("description") description: RequestBody,
+        @Header("Authorization") token: String
+    ): Call<StoryAddResponse>
 }

@@ -21,4 +21,8 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="upload">UPLOAD</string>
+    <string name="pick_picture">Pick the Image</string>
+    <string name="package_name">" com.example.submission_intermediate"</string>
+    <string name="warningAddImage">Pilih Image Terlebih Dahulu</string>
+    <string name="warningAddDescription">Deskripsi Kosong!!!</string>
 </resources>

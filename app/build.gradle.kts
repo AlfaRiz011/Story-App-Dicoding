@@ -55,6 +55,7 @@ dependencies {
     //Lifecycle
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+    implementation ("id.zelory:compressor:3.0.1")
 
     //Android KTX
     implementation("androidx.activity:activity-ktx:1.4.0")

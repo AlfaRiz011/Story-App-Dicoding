@@ -1,11 +1,12 @@
 package com.example.submission_intermediate.ui.story
 
+import android.Manifest
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -13,8 +14,11 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.submission_intermediate.R
 import com.example.submission_intermediate.databinding.ActivityUploadBinding
 import com.example.submission_intermediate.ui.MainActivity
@@ -22,22 +26,21 @@ import com.example.submission_intermediate.ui.auth.dataStore
 import com.example.submission_intermediate.ui.user.UserViewModel
 import com.example.submission_intermediate.ui.user.ViewModelFactory
 import com.example.submission_intermediate.uitls.UserPreferences
+import id.zelory.compressor.Compressor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import id.zelory.compressor.Compressor
-import kotlinx.coroutines.Dispatchers
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class UploadActivity : AppCompatActivity() {
 
@@ -46,6 +49,9 @@ class UploadActivity : AppCompatActivity() {
     private var file: File? = null
     private lateinit var finalFile: File
     private lateinit var token: String
+    private val cameraPermission = Manifest.permission.CAMERA
+    private val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+
 
     private val uploadViewModel : UploadViewModel by lazy {
         ViewModelProvider(this)[UploadViewModel::class.java]
@@ -94,9 +100,11 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun setAction() {
-        binding.btnGallery.setOnClickListener{ startGallery() }
-        binding.btnCamera.setOnClickListener{ startCamera() }
-        binding.btnUpload.setOnClickListener{ uploadImage() }
+        with(binding){
+            btnGallery.setOnClickListener{ startGallery() }
+            btnCamera.setOnClickListener{ startCamera() }
+            btnUpload.setOnClickListener{ uploadImage() }
+        }
     }
 
     private fun uploadImage() {
@@ -152,26 +160,34 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.resolveActivity(packageManager)
-        createTempFileImage(application).also {
-            val photoURI: Uri = FileProvider.getUriForFile(
-                this@UploadActivity,
-                "com.example.submission_intermediate",
-                it
-            )
-            currentImgPath = it.absolutePath
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-            launcherIntentCamera.launch(intent)
+        if (hasCameraPermission()) {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            intent.resolveActivity(packageManager)
+            createTempFileImage(application).also {
+                val photoURI: Uri = FileProvider.getUriForFile(
+                    this@UploadActivity,
+                    "com.example.submission_intermediate",
+                    it
+                )
+                currentImgPath = it.absolutePath
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                launcherIntentCamera.launch(intent)
+            }
+        } else {
+            requestCameraPermission.launch(cameraPermission)
         }
     }
 
     private fun startGallery() {
-        val intent = Intent()
-        intent.action = Intent.ACTION_GET_CONTENT
-        intent.type = "image/*"
-        val picker = Intent.createChooser(intent, getString(R.string.pick_picture))
-        launcherIntentGallery.launch(picker)
+        if (hasStoragePermission()) {
+            val intent = Intent()
+            intent.action = Intent.ACTION_GET_CONTENT
+            intent.type = "image/*"
+            val picker = Intent.createChooser(intent, getString(R.string.pick_picture))
+            launcherIntentGallery.launch(picker)
+        } else {
+            requestStoragePermission.launch(storagePermission)
+        }
     }
 
     private val launcherIntentGallery = registerForActivityResult(
@@ -233,6 +249,34 @@ class UploadActivity : AppCompatActivity() {
 
         return true
     }
+
+    private fun hasStoragePermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this, storagePermission) ==
+                PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun hasCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this, cameraPermission) ==
+                PackageManager.PERMISSION_GRANTED
+    }
+
+    private val requestStoragePermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                startGallery()
+            } else {
+                showToast("Storage permission denied")
+            }
+        }
+
+    private val requestCameraPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                startCamera()
+            } else {
+                showToast("Camera permission denied")
+            }
+        }
 
     companion object {
         const val FORMAT = "MMddyyyy"

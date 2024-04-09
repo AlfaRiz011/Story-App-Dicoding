@@ -29,7 +29,7 @@ class HomeViewModel : ViewModel() {
                     isError = false
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        _stories.value = responseBody!!
+                        _stories.value = response.body()
                     }
                 } else {
                     isError = true

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.submission_intermediate.service.api.ApiConfig
 import com.example.submission_intermediate.service.response.DetailResponse
-import com.example.submission_intermediate.service.response.StoriesResponse
 import retrofit2.Call
 import retrofit2.Response
 
@@ -30,7 +29,7 @@ class DetailViewModel: ViewModel() {
                     isError = false
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        _stories.value = responseBody!!
+                        _stories.value = response.body()
                     }
                     _message.value = responseBody?.message ?: ""
 

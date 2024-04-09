@@ -1,16 +1,16 @@
 package com.example.submission_intermediate.ui.auth
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
-import com.example.submission_intermediate.R
-import com.example.submission_intermediate.databinding.ActivityAuthBinding
-import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import com.example.submission_intermediate.R
+import com.example.submission_intermediate.databinding.ActivityAuthBinding
 import com.example.submission_intermediate.ui.MainActivity
 import com.example.submission_intermediate.ui.user.UserViewModel
 import com.example.submission_intermediate.ui.user.ViewModelFactory
@@ -50,7 +50,7 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    fun intentToMainActivity() {
+    private fun intentToMainActivity() {
         startActivity(Intent(this@AuthActivity, MainActivity::class.java))
     }
 

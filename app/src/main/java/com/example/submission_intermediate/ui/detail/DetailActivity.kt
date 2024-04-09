@@ -43,8 +43,6 @@ class DetailActivity : AppCompatActivity() {
 
         setViewModel()
     }
-
-
     
     private fun setViewModel(){
         val preferences = UserPreferences.getInstance(this.dataStore)
@@ -73,9 +71,11 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setView(stories: DetailResponse) {
-        binding.storyName.text = stories.story.name
-        binding.storyDescription.text = stories.story.description
-        binding.storyImage.loadImage(url = stories.story.photoUrl)
+        with(binding){
+            storyName.text = stories.story.name
+            storyDescription.text = stories.story.description
+            storyImage.loadImage(url = stories.story.photoUrl)
+        }
     }
 
     private fun ImageView.loadImage(url: String) {

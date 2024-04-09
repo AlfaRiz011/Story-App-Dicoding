@@ -14,7 +14,7 @@ object Helper {
         date?.let {
             val now = System.currentTimeMillis()
             val timeAgo = DateUtils.getRelativeTimeSpanString(date.time, now, DateUtils.MINUTE_IN_MILLIS)
-            return "diupload $timeAgo"
+            return "upload $timeAgo"
         }
         return ""
     }

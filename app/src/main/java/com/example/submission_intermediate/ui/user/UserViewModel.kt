@@ -39,6 +39,16 @@ class UserViewModel (private val pref: UserPreferences) : ViewModel() {
         }
     }
 
+    fun getUid(): LiveData<String> {
+        return pref.getUid().asLiveData()
+    }
+
+    fun saveUid(token: String) {
+        viewModelScope.launch {
+            pref.saveUid(token)
+        }
+    }
+
     fun clearDataLogin() {
         viewModelScope.launch {
             pref.clearDataLogin()

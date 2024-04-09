@@ -9,6 +9,7 @@ import com.example.submission_intermediate.databinding.ActivityMainBinding
 import com.example.submission_intermediate.ui.home.HomeFragment
 import com.example.submission_intermediate.ui.story.UploadActivity
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding

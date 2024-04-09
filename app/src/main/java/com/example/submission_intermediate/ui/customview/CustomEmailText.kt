@@ -2,12 +2,10 @@ package com.example.submission_intermediate.ui.customview
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
@@ -34,7 +32,7 @@ class CustomEmailText : AppCompatEditText{
         super.onDraw(canvas)
         textSize = 15f
         hint = "Email"
-        gravity = Gravity.LEFT
+        gravity = Gravity.START
         context.apply {
             background = ContextCompat.getDrawable(this, R.drawable.custom_input_text)
             setTextColor(ContextCompat.getColor(this, R.color.primaryKey))
@@ -52,7 +50,7 @@ class CustomEmailText : AppCompatEditText{
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 error = if (s.isNotEmpty()) {
                     if (!isValidEmail(s.toString())) {
-                        "Invalid email format"
+                        context.getString(R.string.password_invalid)
                     } else {
                         null
                     }
@@ -71,7 +69,4 @@ class CustomEmailText : AppCompatEditText{
         return pattern.matcher(email).matches()
     }
 
-    fun setErrorMessage(errorMessage: String) {
-        error = errorMessage
-    }
 }

@@ -47,12 +47,26 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
             preferences[NAME] = name
         }
     }
+    fun getUid(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[UID] ?: ""
+        }
+    }
+
+
+    suspend fun saveUid(name: String) {
+        dataStore.edit { preferences ->
+            preferences[UID] = name
+        }
+    }
+
 
     suspend fun clearDataLogin() {
         dataStore.edit { preferences ->
             preferences.remove(LOGIN_SESSION)
             preferences.remove(TOKEN)
             preferences.remove(NAME)
+            preferences.remove(UID)
         }
     }
 
@@ -71,6 +85,7 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         private val LOGIN_SESSION = booleanPreferencesKey("login_session")
         private val TOKEN = stringPreferencesKey("token")
         private val NAME = stringPreferencesKey("name")
+        private val UID = stringPreferencesKey("uid")
 
     }
 }

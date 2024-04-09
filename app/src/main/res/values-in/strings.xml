@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="welcomeText1">Selamat datang di Story App Dicoding</string>
+    <string name="loginName">Masuk</string>
+    <string name="registerName">Daftar</string>
+    <string name="welcomeText2">buat story code Anda sendiri</string>
+    <string name="notRegisterYet">belum punya akun?</string>
+    <string name="registered">sudah punya akun?</string>
+    <string name="default_person">Alpa</string>
+    <string name="image_story">Gambar Cerita</string>
+    <string name="upload_default_time">Upload satu detik yang lalu</string>
+    <string name="fab_desc">FAB_CERITA</string>
+    <string name="loading_data">Memuat…</string>
+    <string name="tulis_deskripsi">Tulis Deskripsi.....</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">UPLOAD</string>
+    <string name="pick_picture">Pilih Gambar</string>
+    <string name="warningAddImage">Pilih Gambar Terlebih Dahulu</string>
+    <string name="warningAddDescription">Deskripsi Kosong</string>
+    <string name="user">Pengguna</string>
+    <string name="username">Nama Pengguna</string>
+    <string name="uid">ID Pengguna</string>
+    <string name="change_language">Ubah Bahasa</string>
+    <string name="logout">LOGOUT</string>
+    <string name="copyright">\@2024 Alfa Rizqi</string>
+    <string name="image_preview">Image Preview</string>
+    <string name="password_minchar">Password setidaknya harus 8 karakter</string>
+    <string name="password_invalid">Format Email Salah</string>
+</resources>

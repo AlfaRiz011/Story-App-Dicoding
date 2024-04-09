@@ -30,7 +30,9 @@
             android:src="@drawable/dicoding_logo"
             android:layout_marginTop="20dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="StoryImage" />
+            android:contentDescription="StoryImage"
+            android:transitionName="imageStory"
+            tools:ignore="HardcodedText" />
 
         <View
             android:id="@+id/lineMid"

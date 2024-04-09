@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.example.submission_intermediate.databinding.ItemStoryBinding
 import com.example.submission_intermediate.service.response.ListStoryItem
 import com.example.submission_intermediate.ui.detail.DetailActivity
-import com.example.submission_intermediate.uitls.CustomViewHelper
 import com.example.submission_intermediate.uitls.Helper
 
 
@@ -38,6 +37,7 @@ class HomeAdapter(private val context: Context) : ListAdapter<ListStoryItem, Hom
             binding.itemStory.setOnClickListener{
                 val intent = Intent(context, DetailActivity::class.java)
                 intent.putExtra(UID, story.id)
+
                 context.startActivity(intent)
             }
         }

@@ -52,7 +52,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupView() {
-
         recyclerView = binding.rvStoryContainer
         homeAdapter = HomeAdapter(requireContext())
         recyclerView.adapter = homeAdapter

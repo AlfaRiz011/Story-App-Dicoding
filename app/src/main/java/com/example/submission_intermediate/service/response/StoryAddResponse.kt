@@ -22,5 +22,8 @@ data class StoryData(
 	val id: String? = null,
 
 	@field:SerializedName("lat")
-	val lat: String? = null
+	val lat: String? = null,
+
+	@field:SerializedName("lon")
+	val lon: String? = null,
 )

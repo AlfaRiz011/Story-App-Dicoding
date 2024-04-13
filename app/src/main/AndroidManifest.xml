@@ -5,11 +5,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
     <application
@@ -22,11 +24,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Submission_Intermediate"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD_daUWD1-NnEjXdKLB6zYGEa9vTyaLVhM" />
         <activity
             android:name=".ui.auth.AuthActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.user.UserActivity"
             android:exported="false" />
         <activity
             android:name=".ui.story.UploadActivity"
@@ -39,15 +42,17 @@
             android:exported="false" />
         <activity
             android:name=".ui.splashscreen.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.splash_screen_drawable"
-                android:resource="@mipmap/ic_dicoding"/>
+                android:resource="@mipmap/ic_dicoding" />
         </activity>
 
         <provider

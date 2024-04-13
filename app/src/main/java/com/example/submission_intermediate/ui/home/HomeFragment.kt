@@ -10,11 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.submission_intermediate.R
 import com.example.submission_intermediate.databinding.FragmentHomeBinding
 import com.example.submission_intermediate.service.response.ListStoryItem
 import com.example.submission_intermediate.ui.auth.dataStore
-import com.example.submission_intermediate.ui.user.UserActivity
+import com.example.submission_intermediate.ui.story.UploadActivity
 import com.example.submission_intermediate.ui.user.UserViewModel
 import com.example.submission_intermediate.ui.user.ViewModelFactory
 import com.example.submission_intermediate.uitls.UserPreferences
@@ -40,24 +39,19 @@ class HomeFragment : Fragment() {
 
         setupView()
         setupViewModel()
+        setupAction()
+    }
+
+    private fun setupAction() {
+
+        binding.addStory.setOnClickListener{
+            val intent = Intent(requireContext(), UploadActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun setupView() {
-        binding.toolbar.apply {
-            setTitle(R.string.app_name)
-            inflateMenu(R.menu.menu_home)
-            setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.action_user -> {
-                        val intent = Intent(requireContext(), UserActivity::class.java)
-                        startActivity(intent)
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-        }
 
         recyclerView = binding.rvStoryContainer
         homeAdapter = HomeAdapter(requireContext())
@@ -81,16 +75,16 @@ class HomeFragment : Fragment() {
         val userViewModel =
             ViewModelProvider(this, ViewModelFactory(preferences))[UserViewModel::class.java]
 
-        userViewModel.getToken().observe(this){
+        userViewModel.getToken().observe(viewLifecycleOwner){
             token = it
             homeViewModel.getStories(token)
         }
 
-        homeViewModel.isLoading.observe(this){
+        homeViewModel.isLoading.observe(viewLifecycleOwner){
             showLoading(it)
         }
 
-        homeViewModel.getStoriesData().observe(this){stories ->
+        homeViewModel.getStoriesData().observe(viewLifecycleOwner){stories ->
             setData(stories.listStory)
         }
     }

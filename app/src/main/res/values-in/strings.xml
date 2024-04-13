@@ -27,4 +27,7 @@
     <string name="image_preview">Image Preview</string>
     <string name="password_minchar">Password setidaknya harus 8 karakter</string>
     <string name="password_invalid">Format Email Salah</string>
+    <string name="maps">Maps</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
 </resources>

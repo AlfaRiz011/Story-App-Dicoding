@@ -27,4 +27,7 @@
     <string name="image_preview">Image Preview</string>
     <string name="password_minchar">Password must be at least 8 characters</string>
     <string name="password_invalid">Invalid Email Format</string>
+    <string name="maps">Maps</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
 </resources>

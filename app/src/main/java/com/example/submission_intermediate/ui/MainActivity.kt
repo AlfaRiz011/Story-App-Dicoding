@@ -4,10 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.submission_intermediate.R
 import com.example.submission_intermediate.databinding.ActivityMainBinding
 import com.example.submission_intermediate.ui.home.HomeFragment
 import com.example.submission_intermediate.ui.story.UploadActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,23 +30,18 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.coordinator, HomeFragment())
-            .commit()
-
-        setAction()
+        setView()
     }
 
-    private fun setAction() {
+    private fun setView() {
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        binding.addStory.setOnClickListener{
-            val intent = Intent(this@MainActivity, UploadActivity::class.java)
-            startActivity(intent)
-        }
+        val bottomNav: BottomNavigationView = findViewById(R.id.nav_view)
 
+        bottomNav.setupWithNavController(navController)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         finishAffinity()

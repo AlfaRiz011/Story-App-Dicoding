@@ -6,15 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.submission_intermediate.R
+import com.example.submission_intermediate.database.StoryDB
 import com.example.submission_intermediate.databinding.CustomTooltipMapBinding
 import com.example.submission_intermediate.databinding.FragmentMapsBinding
-import com.example.submission_intermediate.service.response.ListStoryItem
-import com.example.submission_intermediate.service.response.Story
 import com.example.submission_intermediate.ui.auth.dataStore
 import com.example.submission_intermediate.ui.detail.DetailActivity
 import com.example.submission_intermediate.ui.user.UserViewModel
@@ -86,22 +84,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter
 
         mapViewModel.getStoriesWithLocData().observe(viewLifecycleOwner) { stories ->
             for (story in stories.listStory) {
-                if (story != null) {
-                    mMap.addMarker(
-                        MarkerOptions().position(
-                            LatLng(
-                                story.lat,
-                                story.lon
-                            )
+                mMap.addMarker(
+                    MarkerOptions().position(
+                        LatLng(
+                            story.lat,
+                            story.lon
                         )
-                    )?.tag = story
-                }
+                    )
+                )?.tag = story
             }
         }
 
         mMap.setInfoWindowAdapter(this)
         mMap.setOnInfoWindowClickListener { marker ->
-            val data: Story = marker.tag as Story
+            val data: StoryDB = marker.tag as StoryDB
             routeToDetailStory(data)
         }
 
@@ -113,7 +109,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter
 //        TODO("Not yet implemented")
 //    }
 
-    private fun routeToDetailStory(data: Story) {
+    private fun routeToDetailStory(data: StoryDB) {
         val intent = Intent(requireContext(), DetailActivity::class.java)
         intent.putExtra("UID", data.id)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -136,7 +132,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter
 
     override fun getInfoWindow(marker: Marker): View {
         val bindingTool = CustomTooltipMapBinding.inflate(LayoutInflater.from(requireContext()))
-        val data: ListStoryItem = marker.tag as ListStoryItem
+        val data: StoryDB = marker.tag as StoryDB
 
         bindingTool.labelLocation.text = Helper.parseAddressLocation(requireContext(), marker.position.latitude, marker.position.longitude)
         bindingTool.name.text = data.name

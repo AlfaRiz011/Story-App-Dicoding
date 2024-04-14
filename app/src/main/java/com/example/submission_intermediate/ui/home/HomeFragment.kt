@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.submission_intermediate.databinding.FragmentHomeBinding
-import com.example.submission_intermediate.service.response.ListStoryItem
+import com.example.submission_intermediate.service.api.ApiConfig
 import com.example.submission_intermediate.ui.auth.dataStore
 import com.example.submission_intermediate.ui.story.UploadActivity
 import com.example.submission_intermediate.ui.user.UserViewModel
@@ -24,7 +25,6 @@ class HomeFragment : Fragment() {
     private lateinit var token: String
     private lateinit var homeAdapter: HomeAdapter
     private lateinit var binding: FragmentHomeBinding
-    private val homeViewModel : HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,30 +65,26 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setData(listStory: List<ListStoryItem?>) {
-        homeAdapter.submitList(listStory.filterNotNull())
-    }
-
     private fun setupViewModel() {
         val preferences = UserPreferences.getInstance(requireContext().dataStore)
         val userViewModel =
             ViewModelProvider(this, ViewModelFactory(preferences))[UserViewModel::class.java]
 
-        userViewModel.getToken().observe(viewLifecycleOwner){
+        userViewModel.getToken().observe(viewLifecycleOwner) {
             token = it
-            homeViewModel.getStories(token)
-        }
+            val homeViewModel: HomeViewModel by viewModels {
+                HomeViewModelFactory(
+                    requireContext(),
+                    ApiConfig.getApiService(),
+                    token
+                )
+            }
 
-        homeViewModel.isLoading.observe(viewLifecycleOwner){
-            showLoading(it)
-        }
-
-        homeViewModel.getStoriesData().observe(viewLifecycleOwner){stories ->
-            setData(stories.listStory)
+            homeViewModel.story.observe(viewLifecycleOwner) {story ->
+                homeAdapter.submitData(lifecycle, story)
+            }
         }
     }
 
-    private fun showLoading(state: Boolean) {
-        binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE
-    }
+
 }

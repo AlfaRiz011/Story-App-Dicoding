@@ -1,12 +1,11 @@
 package com.example.submission_intermediate.ui.map
 
-import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -14,9 +13,8 @@ import com.example.submission_intermediate.R
 import com.example.submission_intermediate.databinding.CustomTooltipMapBinding
 import com.example.submission_intermediate.databinding.FragmentMapsBinding
 import com.example.submission_intermediate.service.response.ListStoryItem
-import com.example.submission_intermediate.service.response.Story
+import com.example.submission_intermediate.ui.MainActivity
 import com.example.submission_intermediate.ui.auth.dataStore
-import com.example.submission_intermediate.ui.detail.DetailActivity
 import com.example.submission_intermediate.ui.user.UserViewModel
 import com.example.submission_intermediate.ui.user.ViewModelFactory
 import com.example.submission_intermediate.uitls.Helper
@@ -26,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
@@ -75,10 +74,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.uiSettings.isIndoorLevelPickerEnabled = true
+
+        mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isCompassEnabled = true
-        mMap.uiSettings.isMapToolbarEnabled = true
-        mMap.uiSettings.isTiltGesturesEnabled = true
 
 
         val indonesia = LatLng(-0.7893, 113.9213)
@@ -98,34 +96,28 @@ class MapsFragment : Fragment(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter
                 }
             }
         }
-
         mMap.setInfoWindowAdapter(this)
-        mMap.setOnInfoWindowClickListener { marker ->
-            val data: Story = marker.tag as Story
-            routeToDetailStory(data)
+
+        setMapStyle()
+    }
+
+    private fun setMapStyle() {
+        try {
+            val success =
+                mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                        (activity as MainActivity),
+                        R.raw.gmaps
+                    )
+                )
+            if (!success) {
+                Log.e("TAG_MAPS", "Style parsing  failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e("TAG_MAPS", "Can't find style. Error: ", exception)
         }
-
-//        setMapStyle()
     }
 
-//
-//    private fun setMapStyle() {
-//        TODO("Not yet implemented")
-//    }
-
-    private fun routeToDetailStory(data: Story) {
-        val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra("UID", data.id)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        requireContext().startActivity(intent)
-    }
-
-    private fun showToast(msg: String) {
-        Toast.makeText(
-            requireContext(),
-            msg,
-            Toast.LENGTH_LONG).show()
-    }
     private fun showLoading(state: Boolean) {
         binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE
     }

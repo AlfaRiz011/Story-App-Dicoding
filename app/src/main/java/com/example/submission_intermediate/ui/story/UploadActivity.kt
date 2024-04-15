@@ -26,6 +26,10 @@ import com.example.submission_intermediate.ui.auth.dataStore
 import com.example.submission_intermediate.ui.user.UserViewModel
 import com.example.submission_intermediate.ui.user.ViewModelFactory
 import com.example.submission_intermediate.uitls.UserPreferences
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import android.location.Location
+import com.google.android.gms.maps.model.LatLng
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,12 +49,17 @@ import java.util.Locale
 class UploadActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityUploadBinding
-
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var file: File? = null
+    private var lat: Double? = null
+    private var lon: Double? = null
     private lateinit var finalFile: File
     private lateinit var token: String
+
     private val cameraPermission = Manifest.permission.CAMERA
     private val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+    private val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION
+    private val courseLocationPermission = Manifest.permission.ACCESS_COARSE_LOCATION
 
 
     private val uploadViewModel : UploadViewModel by lazy {
@@ -101,9 +110,34 @@ class UploadActivity : AppCompatActivity() {
 
     private fun setAction() {
         with(binding){
+            locationRadio.setOnClickListener{ getMyLocation() }
             btnGallery.setOnClickListener{ startGallery() }
             btnCamera.setOnClickListener{ startCamera() }
             btnUpload.setOnClickListener{ uploadImage() }
+        }
+    }
+
+    private fun getMyLocation() {
+        if (hasLocationPermission()) {
+            try {
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location: Location? ->
+                        location?.let {
+                            this.lat = it.latitude
+                            this.lon = it.longitude
+                        } ?: showToast("Tidak dapat mendapatkan lokasi saat ini")
+                    }
+                    .addOnFailureListener { e ->
+                        showToast("Gagal mendapatkan lokasi: ${e.message}")
+                    }
+            } catch (e: SecurityException) {
+                e.printStackTrace()
+                showToast("Tidak dapat mengakses lokasi karena izin tidak diberikan")
+            }
+        } else {
+            requestLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            requestLocationPermission2.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
         }
     }
 
@@ -139,7 +173,14 @@ class UploadActivity : AppCompatActivity() {
 
                 val descPart = desc.toRequestBody("text/plain".toMediaType())
 
-                uploadViewModel.uploadStory(imageMultipart, descPart, token)
+                val latPart = lat.toString().toRequestBody("text/plain".toMediaType())
+                val lonPart = lon.toString().toRequestBody("text/plain".toMediaType())
+
+                if (binding.locationRadio.isChecked){
+                    uploadViewModel.uploadStory(imageMultipart, descPart, token, latPart, lonPart)
+                }else{
+                    uploadViewModel.uploadStory(imageMultipart, descPart, token)
+                }
             }
         }
     }
@@ -260,6 +301,12 @@ class UploadActivity : AppCompatActivity() {
                 PackageManager.PERMISSION_GRANTED
     }
 
+    private fun hasLocationPermission(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, locationPermission) == PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(this, courseLocationPermission) == PackageManager.PERMISSION_GRANTED)
+    }
+
+
     private val requestStoragePermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) {
@@ -268,6 +315,25 @@ class UploadActivity : AppCompatActivity() {
                 showToast("Storage permission denied")
             }
         }
+
+    private val requestLocationPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                getMyLocation()
+            } else {
+                showToast("Location permission denied")
+            }
+        }
+
+    private val requestLocationPermission2 =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                getMyLocation()
+            } else {
+                showToast("Location permission denied")
+            }
+        }
+
 
     private val requestCameraPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -278,7 +344,11 @@ class UploadActivity : AppCompatActivity() {
             }
         }
 
+
+
     companion object {
         const val FORMAT = "MMddyyyy"
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 100
+
     }
 }

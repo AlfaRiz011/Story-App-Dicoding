@@ -34,5 +34,6 @@
     <string name="content_description_image_story">Content_Image</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit.</string>
     <string name="retry">Retry</string>
+    <string name="add_your_location">Add Your Location</string>
 
 </resources>

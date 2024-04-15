@@ -14,6 +14,7 @@ import com.example.submission_intermediate.service.response.DetailResponse
 import com.example.submission_intermediate.ui.auth.dataStore
 import com.example.submission_intermediate.ui.user.UserViewModel
 import com.example.submission_intermediate.ui.user.ViewModelFactory
+import com.example.submission_intermediate.uitls.Helper
 import com.example.submission_intermediate.uitls.UserPreferences
 
 class DetailActivity : AppCompatActivity() {
@@ -43,7 +44,7 @@ class DetailActivity : AppCompatActivity() {
 
         setViewModel()
     }
-    
+
     private fun setViewModel(){
         val preferences = UserPreferences.getInstance(this.dataStore)
         val userViewModel =
@@ -71,13 +72,23 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setView(stories: DetailResponse) {
-        with(binding){
+        with(binding) {
             storyName.text = stories.story.name
             storyDescription.text = stories.story.description
             storyImage.loadImage(url = stories.story.photoUrl)
+
+            if(stories.story.lat != null){
+                storyLocation.text =
+                    Helper.parseAddressLocation(
+                        this@DetailActivity,
+                        stories.story.lat as Double,
+                        stories.story.lon as Double
+                )
+            }else{
+                storyLocation.text = " "
+            }
         }
     }
-
     private fun ImageView.loadImage(url: String) {
         Glide.with(this.context)
             .load(url)

@@ -7,6 +7,8 @@ import com.example.submission_intermediate.service.response.RegisterResponse
 import com.example.submission_intermediate.service.response.RegisterData
 import com.example.submission_intermediate.service.response.StoriesResponse
 import com.example.submission_intermediate.service.response.StoryAddResponse
+import com.example.submission_intermediate.service.response.StoryDB
+import com.example.submission_intermediate.service.response.StoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -34,6 +36,13 @@ interface ApiService {
     fun getStory(
         @Header("Authorization") token: String
     ): Call<StoriesResponse>
+
+    @GET("stories")
+    suspend fun getStoryList(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): StoryResponse
 
     @GET("stories?location=1")
     fun getStoryWithLoc(

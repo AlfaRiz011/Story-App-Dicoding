@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
     id ("kotlin-parcelize")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
@@ -84,6 +85,12 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //Maps
-    implementation ("com.google.android.gms:play-services-maps:18.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.0.1")
 
+    //Paging
+    implementation("androidx.paging:paging-runtime-ktx:3.1.0")
+
+    //Room
+    implementation("androidx.room:room-ktx:2.4.0-rc01")
+    ksp("androidx.room:room-compiler:2.4.0-rc01")
 }

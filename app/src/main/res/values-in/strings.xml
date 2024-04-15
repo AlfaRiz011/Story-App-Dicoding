@@ -33,5 +33,6 @@
     <string name="content_description_avatar">Content_Avatar</string>
     <string name="content_description_image_story">Content_Image</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit.</string>
+    <string name="retry">Retry</string>
 
 </resources>

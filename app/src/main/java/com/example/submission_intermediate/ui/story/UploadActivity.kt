@@ -57,7 +57,6 @@ class UploadActivity : AppCompatActivity() {
     private lateinit var token: String
 
     private val cameraPermission = Manifest.permission.CAMERA
-    private val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
     private val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION
     private val courseLocationPermission = Manifest.permission.ACCESS_COARSE_LOCATION
 
@@ -219,15 +218,11 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun startGallery() {
-        if (hasStoragePermission()) {
-            val intent = Intent()
-            intent.action = Intent.ACTION_GET_CONTENT
-            intent.type = "image/*"
-            val picker = Intent.createChooser(intent, getString(R.string.pick_picture))
-            launcherIntentGallery.launch(picker)
-        } else {
-            callPermissionStorage()
-        }
+        val intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = "image/*"
+        val picker = Intent.createChooser(intent, getString(R.string.pick_picture))
+        launcherIntentGallery.launch(picker)
     }
 
     private val launcherIntentGallery = registerForActivityResult(
@@ -290,11 +285,6 @@ class UploadActivity : AppCompatActivity() {
         return true
     }
 
-    private fun hasStoragePermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this, storagePermission) ==
-                PackageManager.PERMISSION_GRANTED
-    }
-
     private fun hasCameraPermission(): Boolean {
         return ContextCompat.checkSelfPermission(this, cameraPermission) ==
                 PackageManager.PERMISSION_GRANTED
@@ -303,20 +293,6 @@ class UploadActivity : AppCompatActivity() {
     private fun hasLocationPermission(): Boolean {
         return (ContextCompat.checkSelfPermission(this, locationPermission) == PackageManager.PERMISSION_GRANTED) &&
                 (ContextCompat.checkSelfPermission(this, courseLocationPermission) == PackageManager.PERMISSION_GRANTED)
-    }
-
-
-    private val requestStoragePermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) {
-                startGallery()
-            } else {
-                showToast("Storage permission denied")
-            }
-        }
-
-    private fun callPermissionStorage() {
-        requestStoragePermission.launch(storagePermission)
     }
 
     private val requestLocationPermission =

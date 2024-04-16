@@ -9,8 +9,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.example.submission_intermediate.data.StoryRepository
-import com.example.submission_intermediate.database.StoryDatabase
-import com.example.submission_intermediate.service.api.ApiService
 import com.example.submission_intermediate.service.response.StoryDB
 import com.example.submission_intermediate.ui.utils.DataDummy
 import com.example.submission_intermediate.ui.utils.MainDispatcherRule
@@ -19,7 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -60,11 +57,25 @@ class HomeViewModelTest{
 
         differ.submitData(actualStories)
 
-        Assert.assertNotNull(differ.snapshot())
-        Assert.assertEquals(dummyStoriesResponse.listStory, differ.snapshot())
-        Assert.assertEquals(dummyStoriesResponse.listStory.size, differ.snapshot().size)
-        Assert.assertEquals(dummyStoriesResponse.listStory[0].id, differ.snapshot()[0]?.id)
+        val actualList = differ.snapshot()
+
+        Assert.assertNotNull(actualList)
+
+        Assert.assertEquals(dummyStoriesResponse.listStory.size, actualList.size)
+
+        dummyStoriesResponse.listStory.forEachIndexed { index, expected ->
+            val actual = actualList[index]
+
+            Assert.assertEquals(expected.id, actual?.id)
+            Assert.assertEquals(expected.name, actual?.name)
+            Assert.assertEquals(expected.description, actual?.description)
+            Assert.assertEquals(expected.createdAt, actual?.createdAt)
+            Assert.assertEquals(expected.lat, actual?.lat)
+            Assert.assertEquals(expected.lon, actual?.lon)
+            Assert.assertEquals(expected.photoUrl, actual?.photoUrl)
+        }
     }
+
 
     @Test
     fun `when getStory Empty Should Return No Data`() = runTest {

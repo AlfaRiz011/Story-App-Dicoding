@@ -136,8 +136,7 @@ class UploadActivity : AppCompatActivity() {
                 showToast("Tidak dapat mengakses lokasi karena izin tidak diberikan")
             }
         } else {
-            requestLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            requestLocationPermission2.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+            callPermissionLocation()
         }
     }
 
@@ -215,7 +214,7 @@ class UploadActivity : AppCompatActivity() {
                 launcherIntentCamera.launch(intent)
             }
         } else {
-            requestCameraPermission.launch(cameraPermission)
+            callPermissionCamera()
         }
     }
 
@@ -227,7 +226,7 @@ class UploadActivity : AppCompatActivity() {
             val picker = Intent.createChooser(intent, getString(R.string.pick_picture))
             launcherIntentGallery.launch(picker)
         } else {
-            requestStoragePermission.launch(storagePermission)
+            callPermissionStorage()
         }
     }
 
@@ -316,6 +315,10 @@ class UploadActivity : AppCompatActivity() {
             }
         }
 
+    private fun callPermissionStorage() {
+        requestStoragePermission.launch(storagePermission)
+    }
+
     private val requestLocationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) {
@@ -325,15 +328,9 @@ class UploadActivity : AppCompatActivity() {
             }
         }
 
-    private val requestLocationPermission2 =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) {
-                getMyLocation()
-            } else {
-                showToast("Location permission denied")
-            }
-        }
-
+    private fun callPermissionLocation() {
+        requestLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
 
     private val requestCameraPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -344,11 +341,12 @@ class UploadActivity : AppCompatActivity() {
             }
         }
 
+    private fun callPermissionCamera() {
+        requestCameraPermission.launch(cameraPermission)
+    }
 
 
     companion object {
         const val FORMAT = "MMddyyyy"
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 100
-
     }
 }
